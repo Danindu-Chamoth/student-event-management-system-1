@@ -5,7 +5,26 @@ const Event = require("../models/Event");
 // =======================
 exports.createEvent = async (req, res) => {
   try {
-    const existingEvent = await Event.findOne({ title: req.body.title });
+    console.log("==== INCOMING CREATE EVENT REQUEST ====");
+    console.log("Content-Type:", req.headers["content-type"]);
+    console.log("Body parsing result:", req.body);
+    console.log("File parsing result:", req.file);
+    console.log("=======================================");
+
+    if (!req.body || !req.body.title) {
+      return res.status(400).json({
+        message: "Title is required! Ensure you use 'raw JSON' or 'form-data' explicitly in Postman."
+      });
+    }
+
+    const title = String(req.body.title).trim();
+    if (!title) {
+      return res.status(400).json({
+        message: "Title is required!"
+      });
+    }
+
+    const existingEvent = await Event.findOne({ title });
 
     if (existingEvent) {
       return res.status(400).json({
@@ -14,13 +33,16 @@ exports.createEvent = async (req, res) => {
     }
 
     const newEvent = new Event({
-      title: req.body.title,
+      title,
       category: req.body.category,
       location: req.body.location,
       date: req.body.date,
       registrationDeadline: req.body.registrationDeadline,
       capacity: req.body.capacity,
       description: req.body.description,
+      status: req.body.status || "Upcoming",
+      isFeatured: req.body.isFeatured === 'true' || req.body.isFeatured === true,
+      isDraft: req.body.isDraft === 'true' || req.body.isDraft === true,
       image: req.file ? req.file.filename : null
     });
 
@@ -28,7 +50,22 @@ exports.createEvent = async (req, res) => {
     res.status(201).json(savedEvent);
 
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    // Mongo duplicate key (unique index) error
+    if (err && err.code === 11000) {
+      return res.status(400).json({
+        message: "Duplicate title not allowed!"
+      });
+    }
+
+    // Mongoose validation error (missing required fields, invalid types, etc.)
+    if (err && err.name === "ValidationError") {
+      const firstError = Object.values(err.errors || {})[0];
+      return res.status(400).json({
+        message: firstError?.message || "Validation error"
+      });
+    }
+
+    res.status(500).json({ message: err?.message || "Internal server error" });
   }
 };
 
@@ -51,6 +88,12 @@ exports.getEvents = async (req, res) => {
 // =======================
 exports.updateEvent = async (req, res) => {
   try {
+    if (!req.body) {
+      return res.status(400).json({
+        message: "Request body is missing! Ensure you use 'raw JSON' or 'form-data' explicitly in Postman."
+      });
+    }
+
     const event = await Event.findById(req.params.id);
 
     if (!event) {
@@ -81,13 +124,26 @@ exports.updateEvent = async (req, res) => {
     const updatedEvent = await Event.findByIdAndUpdate(
       req.params.id,
       req.body,
-      { new: true }
+      { new: true, runValidators: true }
     );
 
     res.json(updatedEvent);
 
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    if (err && err.code === 11000) {
+      return res.status(400).json({
+        message: "Duplicate title not allowed!"
+      });
+    }
+
+    if (err && err.name === "ValidationError") {
+      const firstError = Object.values(err.errors || {})[0];
+      return res.status(400).json({
+        message: firstError?.message || "Validation error"
+      });
+    }
+
+    res.status(500).json({ message: err?.message || "Internal server error" });
   }
 };
 

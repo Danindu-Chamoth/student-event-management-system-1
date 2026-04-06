@@ -1,0 +1,151 @@
+.event-details {
+  padding: 2rem 0 4rem;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+  transition: color 0.2s ease;
+}
+
+.back-link:hover {
+  color: var(--accent-primary);
+}
+
+.details-header {
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.details-image {
+  width: 100%;
+  height: 350px;
+  object-fit: cover;
+}
+
+.details-content {
+  padding: 2rem;
+}
+
+.badge {
+  display: inline-block;
+  background: var(--accent-gradient);
+  color: white;
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+.details-title {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+.details-info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.info-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.icon-accent {
+  color: var(--accent-primary);
+  flex-shrink: 0;
+}
+
+.info-label {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  margin-bottom: 0.25rem;
+}
+
+.info-value {
+  font-weight: 500;
+  color: var(--text-main);
+}
+
+.details-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.action-group {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.details-body {
+  padding: 2.5rem;
+}
+
+.details-body h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: var(--text-main);
+}
+
+.details-description {
+  line-height: 1.7;
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+  white-space: pre-wrap;
+}
+
+.deadline-notice {
+  background: rgba(236, 72, 153, 0.1);
+  border: 1px solid rgba(236, 72, 153, 0.2);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  color: var(--accent-secondary);
+}
+
+.badge-featured {
+  background: var(--accent-gradient);
+}
+
+.badge-draft {
+  background: rgba(239, 68, 68, 0.9);
+}
+
+.status-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  background: var(--input-bg);
+  border: 1px solid var(--border-color);
+  margin-bottom: 0.75rem;
+  width: max-content;
+  color: var(--text-main);
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.status-upcoming { background: #3b82f6; }
+.status-completed { background: #10b981; }
+.status-cancelled { background: #ef4444; }
