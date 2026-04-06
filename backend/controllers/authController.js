@@ -207,7 +207,19 @@ exports.login = async (req, res) => {
 
     // 3. Verify Account Status
     if (!user.isVerified) {
-      return res.status(403).json({ message: "Your email is not verified. Please verify your email first." });
+      // Check if this is a legacy user from before the 6-digit OTP process
+      if (!user.verificationToken || user.verificationToken.length > 6) {
+        // Auto-verify legacy users transparently
+        user.isVerified = true;
+        // Optional cleanup
+        user.verificationToken = undefined;
+        user.otpExpires = undefined; 
+        
+        // Save the change asynchronously so we don't hold up their login
+        user.save({ validateBeforeSave: false }).catch(err => console.error("Legacy user auto-verification failed:", err));
+      } else {
+        return res.status(403).json({ message: "Your email is not verified. Please verify your email first." });
+      }
     }
     if (user.status === "disabled") {
       return res.status(403).json({
