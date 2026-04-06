@@ -85,7 +85,7 @@ export default function EventForm() {
           headers: { 'Content-Type': 'multipart/form-data' }
         });
       }
-      navigate('/');
+      navigate('/dashboard');
     } catch (err) {
       alert(err.response?.data?.message || err.message || 'Failed to save event');
     } finally {
@@ -95,7 +95,7 @@ export default function EventForm() {
 
   return (
     <div className="event-form-page container animate-fade-in">
-      <Link to="/" className="back-link"><ArrowLeft size={18} /> Back</Link>
+      <Link to="/dashboard" className="back-link"><ArrowLeft size={18} /> Back</Link>
       
       <div className="form-container glass-panel">
         <div className="form-header">

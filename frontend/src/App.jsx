@@ -1,21 +1,34 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Dashboard from './pages/Dashboard';
 import EventDetails from './pages/EventDetails';
 import EventForm from './pages/EventForm';
+import Landing from './pages/Landing';
 
-function App() {
+const AppContent = () => {
+  const location = useLocation();
+  const isLandingPage = location.pathname === '/';
+
   return (
-    <Router>
-      <Navbar />
+    <>
+      {!isLandingPage && <Navbar />}
       <main>
         <Routes>
-          <Route path="/" element={<Dashboard />} />
+          <Route path="/" element={<Landing />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/events/:id" element={<EventDetails />} />
           <Route path="/create" element={<EventForm />} />
           <Route path="/edit/:id" element={<EventForm />} />
         </Routes>
       </main>
+    </>
+  );
+};
+
+function App() {
+  return (
+    <Router>
+      <AppContent />
     </Router>
   );
 }

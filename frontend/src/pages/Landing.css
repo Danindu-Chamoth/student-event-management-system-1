@@ -1,0 +1,609 @@
+/* Landing.css */
+
+.landing-page {
+  background-color: #0b0f19;
+  color: #f1f5f9;
+  font-family: 'Inter', system-ui, sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Typography & Utilities */
+.text-gradient {
+  background: linear-gradient(90deg, #db469f, #ec8a41, #db469f);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% auto;
+}
+
+.gradient-circle {
+  background: linear-gradient(135deg, #d946ef, #8b5cf6);
+  color: white;
+}
+
+.blue-gradient {
+  background: linear-gradient(135deg, #3b82f6, #2dd4bf) !important;
+}
+
+.pink-btn {
+  background: linear-gradient(90deg, #d946ef, #ec4899);
+  color: white;
+  border: none;
+}
+
+.dark-btn {
+  background-color: #1e293b;
+  color: #f8fafc;
+  border: 1px solid #334155;
+}
+
+/* Custom Navbar */
+.landing-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 5%;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(11, 15, 25, 0.8);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.landing-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.landing-logo .logo-icon {
+  color: #d946ef;
+}
+
+.landing-links {
+  display: flex;
+  gap: 2rem;
+}
+
+.landing-links a {
+  color: #cbd5e1;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  transition: color 0.3s;
+}
+
+.landing-links a:hover {
+  color: #d946ef;
+}
+
+.landing-actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.btn-login {
+  color: #f8fafc;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+}
+
+.btn-register {
+  background: linear-gradient(90deg, #d946ef, #8b5cf6);
+  color: white;
+  text-decoration: none;
+  padding: 0.5rem 1.5rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: opacity 0.3s;
+}
+
+.btn-register:hover {
+  opacity: 0.9;
+}
+
+/* Hero Section */
+.hero-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6rem 5% 4rem;
+  position: relative;
+  min-height: 80vh;
+}
+
+.hero-content {
+  flex: 1;
+  max-width: 600px;
+  z-index: 2;
+}
+
+.subtitle {
+  color: #d946ef;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  margin-bottom: 1rem;
+}
+
+.hero-title {
+  font-size: 4.5rem;
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+  color: #f8fafc;
+}
+
+.hero-desc {
+  color: #94a3b8;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 2.5rem;
+  max-width: 90%;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.btn-primary-lg {
+  background: linear-gradient(90deg, #d946ef, #ec4899);
+  color: white;
+  text-decoration: none;
+  padding: 0.8rem 2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: transform 0.2s;
+}
+
+.btn-outline-lg {
+  background: transparent;
+  color: #f8fafc;
+  text-decoration: none;
+  padding: 0.8rem 2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  border: 1px solid #334155;
+  transition: background 0.3s;
+}
+
+.btn-primary-lg:hover {
+  transform: translateY(-2px);
+}
+.btn-outline-lg:hover {
+  background: rgba(51, 65, 85, 0.5);
+}
+
+/* Floating Cards */
+.hero-visual {
+  flex: 1;
+  position: relative;
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+}
+
+.floating-card {
+  position: absolute;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1rem;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 320px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+  transition: transform 0.5s ease;
+}
+
+.floating-card:hover {
+  transform: translateY(-5px);
+}
+
+.c1 {
+  top: 10%;
+  right: 10%;
+  animation: float 6s ease-in-out infinite;
+}
+
+.c2 {
+  bottom: 20%;
+  right: 25%;
+  animation: float 8s ease-in-out infinite reverse;
+}
+
+.fc-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.fc-gradient-bg {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #d946ef, #f43f5e);
+}
+
+.fc-info h4 {
+  margin: 0 0 0.2rem 0;
+  font-size: 1rem;
+}
+
+.fc-info p {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #94a3b8;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+  100% { transform: translateY(0px); }
+}
+
+/* Background Ambient Glow */
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: -10%;
+  right: -5%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(217, 70, 239, 0.15) 0%, rgba(11, 15, 25, 0) 70%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Stats Section */
+.stats-section {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  padding: 2rem 5%;
+  margin-bottom: 4rem;
+}
+
+.stat-box {
+  background: #111827;
+  border: 1px solid #1f2937;
+  padding: 2rem 1rem;
+  text-align: center;
+  border-radius: 12px;
+}
+
+.stat-box h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  color: #f8fafc;
+}
+
+.stat-box p {
+  margin: 0;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+/* Features Section */
+.features-section, .journey-section, .roles-section {
+  padding: 4rem 5%;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.section-subtitle {
+  color: #d946ef;
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+  margin-bottom: 0.5rem;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.feature-card {
+  background: #111827;
+  border: 1px solid #1f2937;
+  padding: 2rem;
+  border-radius: 12px;
+  transition: transform 0.3s;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  border-color: #334155;
+}
+
+.feature-icon {
+  color: #8b5cf6;
+  margin-bottom: 1.5rem;
+}
+
+.feature-card h3 {
+  font-size: 1.25rem;
+  margin: 0 0 1rem 0;
+}
+
+.feature-card p {
+  color: #94a3b8;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Journey Section */
+.journey-timeline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 900px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.journey-step {
+  text-align: center;
+  flex: 1;
+  padding: 0 1rem;
+}
+
+.step-number {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+.journey-step h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1.25rem;
+}
+
+.journey-step p {
+  color: #94a3b8;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.journey-line {
+  flex: 1;
+  height: 2px;
+  background: dashed 2px #334155;
+  background-size: 10px 2px;
+  position: relative;
+  top: -40px;
+}
+
+/* Roles Section */
+.roles-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.role-card {
+  background: #111827;
+  border: 1px solid #1f2937;
+  padding: 3rem 2rem;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+}
+
+.role-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.role-header h2 {
+  margin: 0;
+  font-size: 1.75rem;
+}
+
+.role-icon {
+  color: #d946ef;
+}
+.role-icon-alt {
+  color: #f43f5e;
+}
+
+.role-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem 0;
+  flex: 1;
+}
+
+.role-features li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  color: #cbd5e1;
+}
+
+.role-features li svg {
+  color: #10b981;
+}
+
+.role-btn {
+  text-align: center;
+  padding: 1rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  display: block;
+}
+
+/* CTA Section */
+.cta-section {
+  padding: 4rem 5%;
+}
+
+.cta-box {
+  background: linear-gradient(135deg, #d946ef, #f43f5e, #8b5cf6);
+  padding: 4rem 2rem;
+  text-align: center;
+  border-radius: 16px;
+  color: white;
+}
+
+.cta-box h2 {
+  font-size: 2.5rem;
+  margin: 0 0 1rem 0;
+}
+
+.cta-box p {
+  font-size: 1.1rem;
+  margin: 0 auto 2rem;
+  max-width: 600px;
+}
+
+.btn-register-dark {
+  background: #0b0f19;
+  color: white;
+  text-decoration: none;
+  padding: 1rem 2.5rem;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  display: inline-block;
+  transition: transform 0.2s;
+}
+
+.btn-register-dark:hover {
+  transform: scale(1.05);
+}
+
+/* Footer Section */
+.landing-footer {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 2rem;
+  padding: 4rem 5% 2rem;
+  border-top: 1px solid #1f2937;
+}
+
+.brand-col p {
+  color: #94a3b8;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-top: 1rem;
+  max-width: 300px;
+}
+
+.footer-col h4 {
+  font-size: 1.1rem;
+  margin: 0 0 1.5rem 0;
+  color: #f8fafc;
+}
+
+.footer-col a, .footer-col .contact-item {
+  display: block;
+  color: #94a3b8;
+  text-decoration: none;
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+  transition: color 0.3s;
+}
+
+.footer-col a:hover {
+  color: #d946ef;
+}
+
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.05);
+  padding: 2rem 5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+.social-links {
+  display: flex;
+  gap: 1.5rem;
+}
+.social-links a {
+  color: #64748b;
+  text-decoration: none;
+}
+.social-links a:hover {
+  color: #d946ef;
+}
+
+@media (max-width: 900px) {
+  .hero-section {
+    flex-direction: column;
+    text-align: center;
+  }
+  .hero-title {
+    font-size: 3rem;
+  }
+  .hero-buttons {
+    justify-content: center;
+  }
+  .hero-visual {
+    margin-top: 3rem;
+    width: 100%;
+  }
+  .stats-section {
+    grid-template-columns: 1fr 1fr;
+  }
+  .journey-timeline {
+    flex-direction: column;
+    gap: 3rem;
+  }
+  .journey-line {
+    display: none;
+  }
+  .roles-section {
+    grid-template-columns: 1fr;
+  }
+  .landing-footer {
+    grid-template-columns: 1fr;
+  }
+}
