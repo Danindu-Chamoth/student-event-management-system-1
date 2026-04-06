@@ -1,0 +1,100 @@
+/* Reuse matching styles from VerifyEmailInfo.css and add specific ones */
+
+/* We reuse most of the structural CSS from VerifyEmailInfo which is also loaded on this page usually, 
+   but for safety we will redefine the specific stuff here. */
+
+.success-icon {
+  background: transparent;
+  border: 2px solid #1c2732;
+  box-shadow: inset 0 0 15px rgba(46, 213, 115, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.success-icon::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #2ed573;
+  opacity: 0.2;
+}
+
+.success-icon svg {
+  color: #2ed573 !important;
+  filter: drop-shadow(0 0 5px rgba(46, 213, 115, 0.5));
+}
+
+.error-icon {
+  background: transparent;
+  border: 2px solid #331518;
+  position: relative;
+}
+
+.error-icon::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #ff4757;
+  opacity: 0.2;
+}
+
+.btn-dashboard {
+  width: 100%;
+  background: linear-gradient(135deg, #a463f2 0%, #e555b7 100%);
+  border: none;
+  color: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-dashboard:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(229, 85, 183, 0.4);
+}
+
+.help-link {
+  font-size: 0.9rem;
+}
+
+.verifying-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 2rem 0;
+}
+
+.loader {
+  border: 3px solid rgba(164, 99, 242, 0.2);
+  border-top: 3px solid #e555b7;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.arrow {
+  margin-left: 5px;
+  transition: transform 0.2s ease;
+}
+
+.btn-dashboard:hover .arrow {
+  transform: translateX(4px);
+}

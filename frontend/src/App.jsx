@@ -9,10 +9,11 @@ import Login from './pages/Login';
 import Profile from './pages/Profile';
 import PublicProfile from './pages/PublicProfile';
 import UserManagement from './pages/UserManagement';
+import VerifyEmailInfo from './pages/VerifyEmailInfo';
 
 const AppContent = () => {
   const location = useLocation();
-  const hideNavbarRoutes = ['/', '/register', '/login', '/profile'];
+  const hideNavbarRoutes = ['/', '/register', '/login', '/profile', '/verify-info'];
   const profileRoutes = ['/profile'];
   const shouldHideNavbar = hideNavbarRoutes.includes(location.pathname) || location.pathname.startsWith('/profile/');
   const isProfilePage = profileRoutes.includes(location.pathname);
@@ -25,6 +26,7 @@ const AppContent = () => {
           <Route path="/" element={<Landing />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/verify-info" element={<VerifyEmailInfo />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/profile/:id" element={<PublicProfile />} />
           <Route path="/admin/users" element={<UserManagement />} />

@@ -32,8 +32,8 @@ export default function Register() {
       const { name, email, password, role } = formData;
       const response = await api.post('/auth/register', { name, email, password, role });
       
-      alert(response.data.message || 'Registration successful! Please proceed to login.');
-      navigate('/login');
+      // Instead of navigating to login, navigate to verify email info page
+      navigate('/verify-info', { state: { email: formData.email } });
     } catch (err) {
       setError(err.response?.data?.message || err.message || 'Registration failed. Please try again.');
     } finally {

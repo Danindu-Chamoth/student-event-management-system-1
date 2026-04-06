@@ -28,56 +28,122 @@ exports.register = async (req, res) => {
     }
 
     // 2. Create the user
-    // Note: Profile image handled conditionally via req.file if using multer on this route
+    // Generate a 6-digit OTP
+    const verificationToken = Math.floor(100000 + Math.random() * 900000).toString();
+    const otpExpires = new Date(Date.now() + 15 * 60 * 1000); // 15 mins
+
     const newUser = await User.create({
       name,
       email,
       password,
       role: role || "student", // Defaults to student if not provided
       profileImage: req.file ? req.file.filename : "default-avatar.png",
+      verificationToken,
+      otpExpires,
     });
 
-    res.status(201).json({
-      message: "Registration successful!",
-      user: {
-        _id: newUser._id,
-        name: newUser.name,
+    const message = `Your email verification OTP is:\n\n${verificationToken}\n\nThis code will expire in 15 minutes. If you did not request this, please ignore this email.`;
+
+    try {
+      await sendEmail({
         email: newUser.email,
-        role: newUser.role,
-      }
-    });
+        subject: "Verify Your Email - Evenza",
+        message,
+      });
+
+      res.status(201).json({
+        message: `Registration successful! OTP: ${verificationToken}`,
+        user: {
+          _id: newUser._id,
+          name: newUser.name,
+          email: newUser.email,
+          role: newUser.role,
+        }
+      });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: "Registered successfully, but failed to send verification email. Please try resending." });
+    }
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
 // =============================
-// VERIFY EMAIL
+// VERIFY OTP
 // =============================
-exports.verifyEmail = async (req, res) => {
+exports.verifyOtp = async (req, res) => {
   try {
-    const { token } = req.params;
+    const { email, otp } = req.body;
 
-    const user = await User.findOne({ verificationToken: token });
-
-    if (!user) {
-      return res.status(400).json({ message: "Invalid verification token" });
+    if (!email || !otp) {
+      return res.status(400).json({ message: "Please provide email and OTP" });
     }
 
-    // Set verified state to true and clear the token payload
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(400).json({ message: "User not found" });
+    }
+
+    if (user.verificationToken !== otp) {
+      return res.status(400).json({ message: "Invalid OTP" });
+    }
+
+    if (user.otpExpires < Date.now()) {
+      return res.status(400).json({ message: "OTP has expired. Please request a new one." });
+    }
+
+    // Set verified state to true and clear the OTP payload
     user.isVerified = true;
     user.verificationToken = undefined;
+    user.otpExpires = undefined;
     await user.save({ validateBeforeSave: false });
 
     // Note: in a real application, you might redirect to a frontend success page
     res.status(200).json({
-      message: "Email checked and verified successfully! You may now log in.",
+      message: "Email verified successfully! You may now log in.",
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
+// =============================
+// RESEND VERIFICATION
+// =============================
+exports.resendVerification = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await User.findOne({ email });
 
+    if (!user) {
+      return res.status(404).json({ message: "No user found with that email address" });
+    }
+
+    if (user.isVerified) {
+      return res.status(400).json({ message: "Email is already verified" });
+    }
+
+    const verificationToken = Math.floor(100000 + Math.random() * 900000).toString();
+    const otpExpires = new Date(Date.now() + 15 * 60 * 1000); // 15 mins
+    
+    user.verificationToken = verificationToken;
+    user.otpExpires = otpExpires;
+    await user.save({ validateBeforeSave: false });
+
+    const message = `You requested to resend your verification OTP. Your new OTP is:\n\n${verificationToken}\n\nThis code will expire in 15 minutes.`;
+
+    await sendEmail({
+      email: user.email,
+      subject: "Verify Your Email - Evenza",
+      message,
+    });
+
+    res.status(200).json({ message: "Verification email sent successfully!" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 // =============================
 // LOGIN
 // =============================
@@ -101,6 +167,9 @@ exports.login = async (req, res) => {
     }
 
     // 3. Verify Account Status
+    if (!user.isVerified) {
+      return res.status(403).json({ message: "Your email is not verified. Please verify your email first." });
+    }
     if (user.status === "disabled") {
       return res.status(403).json({
         message: "This account has been disabled by an administrator.",
