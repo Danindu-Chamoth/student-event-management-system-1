@@ -128,10 +128,16 @@ export default function UserManagement() {
           <div className="admin-subtitle">System Administration</div>
           <h1 className="admin-title">User Management</h1>
         </div>
-        <button className="btn-add-user" onClick={() => navigate('/register')}>
-          <UserPlus size={18} />
-          Add New User
-        </button>
+        <div style={{ display: 'flex', gap: '1rem' }}>
+          <button className="btn-add-user" onClick={() => navigate('/')} style={{ background: 'transparent', border: '1px solid var(--primary)', color: 'var(--primary)' }}>
+            <ChevronLeft size={18} />
+            Go to Home
+          </button>
+          <button className="btn-add-user" onClick={() => navigate('/register')}>
+            <UserPlus size={18} />
+            Add New User
+          </button>
+        </div>
       </div>
 
       <div className="controls-bar">
