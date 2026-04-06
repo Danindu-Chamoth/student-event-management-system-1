@@ -4,17 +4,22 @@ import Dashboard from './pages/Dashboard';
 import EventDetails from './pages/EventDetails';
 import EventForm from './pages/EventForm';
 import Landing from './pages/Landing';
+import Register from './pages/Register';
+import Login from './pages/Login';
 
 const AppContent = () => {
   const location = useLocation();
-  const isLandingPage = location.pathname === '/';
+  const hideNavbarRoutes = ['/', '/register', '/login'];
+  const shouldHideNavbar = hideNavbarRoutes.includes(location.pathname);
 
   return (
     <>
-      {!isLandingPage && <Navbar />}
+      {!shouldHideNavbar && <Navbar />}
       <main>
         <Routes>
           <Route path="/" element={<Landing />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/events/:id" element={<EventDetails />} />
           <Route path="/create" element={<EventForm />} />

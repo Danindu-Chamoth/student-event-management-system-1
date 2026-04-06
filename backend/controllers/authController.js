@@ -27,45 +27,25 @@ exports.register = async (req, res) => {
       return res.status(400).json({ message: "Email is already in use" });
     }
 
-    // 2. Generate a random verification token
-    const verificationToken = crypto.randomBytes(32).toString("hex");
-
-    // 3. Create the user
+    // 2. Create the user
     // Note: Profile image handled conditionally via req.file if using multer on this route
     const newUser = await User.create({
       name,
       email,
       password,
       role: role || "student", // Defaults to student if not provided
-      verificationToken,
       profileImage: req.file ? req.file.filename : "default-avatar.png",
     });
 
-    // 4. Create verification URL to email out
-    const verifyURL = `${req.protocol}://${req.get(
-      "host"
-    )}/api/auth/verify-email/${verificationToken}`;
-
-    const message = `Welcome to the Student Event Management System!\n\nPlease verify your email by clicking lightly on this link:\n${verifyURL}`;
-
-    try {
-      await sendEmail({
+    res.status(201).json({
+      message: "Registration successful!",
+      user: {
+        _id: newUser._id,
+        name: newUser.name,
         email: newUser.email,
-        subject: "Verify Your Email Address",
-        message,
-      });
-
-      res.status(201).json({
-        message:
-          "Registration successful! Please check your email to verify your account.",
-      });
-    } catch (error) {
-      console.log("Email Error:", error);
-      // In development, we return 201 but notify of email failure, appending the validation link for manual testing
-      return res.status(201).json({
-        message: "Registration successful! (Email failed to send. Developer token: " + verificationToken + ")",
-      });
-    }
+        role: newUser.role,
+      }
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -127,12 +107,7 @@ exports.login = async (req, res) => {
       });
     }
 
-    // 4. Enforce Verification
-    if (!user.isVerified) {
-      return res.status(401).json({
-        message: "Please verify your email address before logging in.",
-      });
-    }
+
 
     // 5. Update last login timestamp
     user.lastLogin = Date.now();
