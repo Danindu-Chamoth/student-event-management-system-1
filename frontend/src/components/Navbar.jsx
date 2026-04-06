@@ -47,10 +47,22 @@ export default function Navbar() {
   return (
     <nav className="navbar glass-panel">
       <div className="navbar-container">
-        <Link to="/" className="navbar-logo">
-          <CalendarDays className="logo-icon" />
-          <span>Evenza</span>
-        </Link>
+        <div className="nav-main-left">
+          <Link to="/" className="navbar-logo">
+            <CalendarDays className="logo-icon" />
+            <span>Evenza</span>
+          </Link>
+          
+          {user && (
+            <div className="nav-menu-links">
+              <Link to="/dashboard" className="nav-menu-item">Dashboard</Link>
+              <Link to="/dashboard" className="nav-menu-item">Events</Link>
+              {user.role === 'admin' && (
+                <Link to="/admin/users" className="nav-menu-item">Users</Link>
+              )}
+            </div>
+          )}
+        </div>
         <div className="navbar-links">
           <button onClick={toggleTheme} className="btn-icon theme-toggle" aria-label="Toggle Theme">
             {isDark ? <Sun size={20} /> : <Moon size={20} />}

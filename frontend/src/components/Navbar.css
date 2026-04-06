@@ -12,10 +12,35 @@
 }
 
 .navbar-container {
-  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.nav-main-left {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.nav-menu-links {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.nav-menu-item {
+  text-decoration: none;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.nav-menu-item:hover, .nav-menu-item.active {
+  color: var(--text-main);
 }
 
 .navbar-logo {

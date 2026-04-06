@@ -137,6 +137,15 @@ export default function Profile() {
   return (
     <div className="profile-page">
       <div className="container profile-container">
+        
+        {/* Navigation Return */}
+        <div style={{ padding: '2rem 0 1rem', width: '100%', gridColumn: '1 / -1' }}>
+          <Link to="/" className="back-link btn btn-outline" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-muted)', border: 'none', background: 'transparent' }}>
+            <ChevronRight style={{ transform: 'rotate(180deg)' }} size={18} />
+            Back to Home Page
+          </Link>
+        </div>
+
         {/* Sidebar */}
         <aside className="profile-sidebar">
           <div className="profile-card glass-panel animate-fade-in">
