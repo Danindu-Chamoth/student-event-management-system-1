@@ -44,7 +44,7 @@ export default function Landing() {
         <div className="hero-visual">
           <div className="floating-card c1">
             <div className="fc-image">
-               <div className="fc-gradient-bg"></div>
+               <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=100&q=80&fit=crop" alt="Tech Summit" className="fc-img-content" />
             </div>
             <div className="fc-info">
               <h4>Annual Tech Summit</h4>
@@ -53,7 +53,7 @@ export default function Landing() {
           </div>
           <div className="floating-card c2">
              <div className="fc-image">
-               <div className="fc-gradient-bg blue-gradient"></div>
+               <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=100&q=80&fit=crop" alt="Gala Night" className="fc-img-content" />
             </div>
             <div className="fc-info">
               <h4>Mega Gala Night</h4>
