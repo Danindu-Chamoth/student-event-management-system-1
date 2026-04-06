@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { CalendarDays, LogOut, ChevronDown, User, Settings } from 'lucide-react';
+import { CalendarDays, LogOut, ChevronDown, User, Settings, Users } from 'lucide-react';
 import './LandingHeader.css';
 
 export default function LandingHeader() {
@@ -72,6 +72,11 @@ export default function LandingHeader() {
                 </div>
                 <div className="dropdown-divider"></div>
                 <div className="dropdown-menu">
+                  {user.role === 'admin' && (
+                    <Link to="/admin/users" className="dropdown-item" onClick={() => setDropdownOpen(false)}>
+                      <Users size={16} /> User Management
+                    </Link>
+                  )}
                   <Link to="/profile" className="dropdown-item" onClick={() => setDropdownOpen(false)}>
                     <User size={16} /> Dashboard
                   </Link>
