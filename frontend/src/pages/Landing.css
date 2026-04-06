@@ -38,80 +38,6 @@
   border: 1px solid #334155;
 }
 
-/* Custom Navbar */
-.landing-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.5rem 5%;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: rgba(11, 15, 25, 0.8);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.landing-logo {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #fff;
-}
-
-.landing-logo .logo-icon {
-  color: #d946ef;
-}
-
-.landing-links {
-  display: flex;
-  gap: 2rem;
-}
-
-.landing-links a {
-  color: #cbd5e1;
-  text-decoration: none;
-  font-size: 0.85rem;
-  font-weight: 600;
-  letter-spacing: 1px;
-  transition: color 0.3s;
-}
-
-.landing-links a:hover {
-  color: #d946ef;
-}
-
-.landing-actions {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-}
-
-.btn-login {
-  color: #f8fafc;
-  text-decoration: none;
-  font-size: 0.85rem;
-  font-weight: 600;
-  padding: 0.5rem 1rem;
-}
-
-.btn-register {
-  background: linear-gradient(90deg, #d946ef, #8b5cf6);
-  color: white;
-  text-decoration: none;
-  padding: 0.5rem 1.5rem;
-  border-radius: 20px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  transition: opacity 0.3s;
-}
-
-.btn-register:hover {
-  opacity: 0.9;
-}
-
 /* Hero Section */
 .hero-section {
   display: flex;
@@ -524,64 +450,6 @@
   transform: scale(1.05);
 }
 
-/* Footer Section */
-.landing-footer {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr;
-  gap: 2rem;
-  padding: 4rem 5% 2rem;
-  border-top: 1px solid #1f2937;
-}
-
-.brand-col p {
-  color: #94a3b8;
-  font-size: 0.95rem;
-  line-height: 1.6;
-  margin-top: 1rem;
-  max-width: 300px;
-}
-
-.footer-col h4 {
-  font-size: 1.1rem;
-  margin: 0 0 1.5rem 0;
-  color: #f8fafc;
-}
-
-.footer-col a, .footer-col .contact-item {
-  display: block;
-  color: #94a3b8;
-  text-decoration: none;
-  margin-bottom: 0.75rem;
-  font-size: 0.95rem;
-  transition: color 0.3s;
-}
-
-.footer-col a:hover {
-  color: #d946ef;
-}
-
-.footer-bottom {
-  border-top: 1px solid rgba(255,255,255,0.05);
-  padding: 2rem 5%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: #64748b;
-  font-size: 0.9rem;
-}
-
-.social-links {
-  display: flex;
-  gap: 1.5rem;
-}
-.social-links a {
-  color: #64748b;
-  text-decoration: none;
-}
-.social-links a:hover {
-  color: #d946ef;
-}
-
 @media (max-width: 900px) {
   .hero-section {
     flex-direction: column;
@@ -608,9 +476,6 @@
     display: none;
   }
   .roles-section {
-    grid-template-columns: 1fr;
-  }
-  .landing-footer {
     grid-template-columns: 1fr;
   }
 }

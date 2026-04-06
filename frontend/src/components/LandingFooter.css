@@ -1,0 +1,158 @@
+/* LandingFooter.css */
+.landing-footer-comp {
+  background-color: #0b0f19;
+  border-top: 1px solid #1f2937;
+  color: #cbd5e1;
+  padding: 4rem 5% 2rem;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+.lf-top {
+  display: grid;
+  grid-template-columns: 1.5fr 2fr 1.5fr;
+  gap: 3rem;
+  margin-bottom: 3rem;
+}
+
+.lf-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.lf-logo .logo-icon {
+  color: #d946ef;
+}
+
+.text-gradient {
+  background: linear-gradient(90deg, #db469f, #ec8a41, #db469f);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% auto;
+}
+
+.brand-desc {
+  color: #94a3b8;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  max-width: 350px;
+}
+
+.lf-socials {
+  display: flex;
+  gap: 1rem;
+}
+
+.social-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #1e293b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #cbd5e1;
+  text-decoration: none;
+  transition: background 0.3s, color 0.3s;
+}
+
+.social-icon:hover {
+  background: #d946ef;
+  color: #fff;
+}
+
+.lf-heading {
+  font-size: 0.85rem;
+  letter-spacing: 1.5px;
+  color: #ec4899;
+  font-weight: 700;
+  margin: 0 0 1.5rem 0;
+}
+
+.links-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+}
+
+.links-grid a {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #94a3b8;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: color 0.3s;
+}
+
+.links-grid a:hover {
+  color: #d946ef;
+}
+
+.links-grid a svg {
+  color: #cbd5e1;
+}
+
+.contact-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: #94a3b8;
+  font-size: 0.95rem;
+}
+
+.c-icon-wrap {
+  color: #d946ef;
+  display: flex;
+  align-items: center;
+}
+
+.lf-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 0.8rem;
+  color: #64748b;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.lf-legal {
+  display: flex;
+  gap: 2rem;
+}
+
+.lf-legal a {
+  color: #64748b;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.lf-legal a:hover {
+  color: #cbd5e1;
+}
+
+@media (max-width: 900px) {
+  .lf-top {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .lf-bottom {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+}

@@ -1,27 +1,13 @@
 import { Link } from 'react-router-dom';
 import { CalendarDays, ShieldCheck, Calendar, Ticket, LineChart, GraduationCap, Users } from 'lucide-react';
+import LandingHeader from '../components/LandingHeader';
+import LandingFooter from '../components/LandingFooter';
 import './Landing.css';
-
 export default function Landing() {
   return (
     <div className="landing-page dark-theme">
       {/* Custom Navbar */}
-      <nav className="landing-nav">
-        <div className="landing-logo">
-          <CalendarDays className="logo-icon" size={24} />
-          <span>Evenza</span>
-        </div>
-        <div className="landing-links">
-          <a href="#home">HOME</a>
-          <a href="#features">FEATURES</a>
-          <a href="#about">ABOUT</a>
-          <a href="#contact">CONTACT</a>
-        </div>
-        <div className="landing-actions">
-           <Link to="/login" className="btn-login">LOGIN</Link>
-           <Link to="/register" className="btn-register">REGISTER</Link>
-        </div>
-      </nav>
+      <LandingHeader />
 
       {/* Hero Section */}
       <section className="hero-section" id="home">
@@ -178,43 +164,7 @@ export default function Landing() {
       </section>
 
       {/* Footer */}
-      <footer className="landing-footer" id="about">
-        <div className="footer-col brand-col">
-          <div className="landing-logo">
-            <CalendarDays className="logo-icon" size={24} />
-            <span>Evenza</span>
-          </div>
-          <p>Revolutionizing university engagement through cutting-edge technology and immersive user experiences.</p>
-        </div>
-        <div className="footer-col" id="contact">
-          <h4>Quick Links</h4>
-          <a href="#home">Home</a>
-          <a href="#features">Features</a>
-          <a href="#about">About</a>
-          <a href="#contact">Privacy Policy</a>
-        </div>
-         <div className="footer-col">
-          <h4>Support</h4>
-          <a href="#">Documentation</a>
-          <a href="#">Help Center</a>
-          <a href="#">API Status</a>
-          <a href="#">Terms of Service</a>
-        </div>
-        <div className="footer-col">
-          <h4>Contact Us</h4>
-          <p className="contact-item">✉ info@evenza.edu</p>
-          <p className="contact-item">📞 +1 (555) EVENT-2024</p>
-          <p className="contact-item">📍 University Innovation Lab</p>
-        </div>
-      </footer>
-      
-      <div className="footer-bottom">
-         <p>© 2024 Evenza University. All rights reserved.</p>
-         <div className="social-links">
-           <a href="#">Twitter</a>
-           <a href="#">Insta</a>
-         </div>
-      </div>
+      <LandingFooter />
     </div>
   );
 }
