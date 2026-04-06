@@ -2,6 +2,7 @@ const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const sendEmail = require("../utils/emailService");
+const { uploadToAzure } = require("../utils/azureBlobService");
 
 // Helper to generate JWT Token
 const signToken = (id) => {
@@ -62,7 +63,14 @@ exports.register = async (req, res) => {
       return res.status(400).json({ message: "Email is already in use" });
     }
 
-    // 2. Create the user
+    // 2. Handle profile image upload to Azure
+    let profileImageValue = "default-avatar.png";
+    if (req.file) {
+      const fileName = `${Date.now()}-${req.file.originalname}`;
+      profileImageValue = await uploadToAzure(req.file.buffer, fileName, req.file.mimetype);
+    }
+
+    // 3. Create the user
     // Generate a 6-digit OTP
     const verificationToken = Math.floor(100000 + Math.random() * 900000).toString();
     const otpExpires = new Date(Date.now() + 15 * 60 * 1000); // 15 mins
@@ -72,7 +80,7 @@ exports.register = async (req, res) => {
       email,
       password,
       role: role || "student", // Defaults to student if not provided
-      profileImage: req.file ? req.file.filename : "default-avatar.png",
+      profileImage: profileImageValue,
       verificationToken,
       otpExpires,
     });

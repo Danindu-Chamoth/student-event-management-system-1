@@ -56,7 +56,11 @@ export default function LandingHeader() {
               onClick={() => setDropdownOpen(!dropdownOpen)}
             >
               <img 
-                src={user.profileImage ? `${import.meta.env.VITE_BACKEND_URL}/uploads/${user.profileImage}` : 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=100&q=80'} 
+                src={user.profileImage && user.profileImage !== 'default-avatar.png'
+                  ? (user.profileImage.startsWith('http') 
+                      ? user.profileImage 
+                      : `${import.meta.env.VITE_BACKEND_URL}/uploads/${user.profileImage}`)
+                  : 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=100&q=80'} 
                 alt={user.name} 
                 className="user-avatar-sm"
               />

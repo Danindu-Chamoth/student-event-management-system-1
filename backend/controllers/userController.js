@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const { uploadToAzure, deleteFromAzure } = require("../utils/azureBlobService");
 
 // ======================================
 // PUBLIC PROFILE OPERATIONS
@@ -39,8 +40,18 @@ exports.updateProfile = async (req, res) => {
     const { name, email, bio } = req.body;
     let updateData = { name, email, bio };
 
+    // Handle profile image upload to Azure Blob Storage
     if (req.file) {
-      updateData.profileImage = req.file.filename;
+      // Delete old image from Azure if it exists
+      const currentUser = await User.findById(req.user._id);
+      if (currentUser.profileImage && currentUser.profileImage !== "default-avatar.png") {
+        await deleteFromAzure(currentUser.profileImage);
+      }
+
+      // Upload new image to Azure
+      const fileName = `${req.user._id}-${Date.now()}-${req.file.originalname}`;
+      const imageUrl = await uploadToAzure(req.file.buffer, fileName, req.file.mimetype);
+      updateData.profileImage = imageUrl;
     }
 
     // Clean undefined fields
@@ -152,6 +163,11 @@ exports.deleteUser = async (req, res) => {
 
     if (!user) {
       return res.status(404).json({ message: "No user found with that ID." });
+    }
+
+    // Clean up Azure blob if user had a profile image
+    if (user.profileImage && user.profileImage !== "default-avatar.png") {
+      await deleteFromAzure(user.profileImage);
     }
 
     res.status(200).json({

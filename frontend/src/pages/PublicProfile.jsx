@@ -44,8 +44,10 @@ export default function PublicProfile() {
     );
   }
 
-  const profileImageUrl = user?.profileImage 
-    ? `${import.meta.env.VITE_BACKEND_URL}/uploads/${user.profileImage}`
+  const profileImageUrl = user?.profileImage && user.profileImage !== 'default-avatar.png'
+    ? (user.profileImage.startsWith('http') 
+        ? user.profileImage 
+        : `${import.meta.env.VITE_BACKEND_URL}/uploads/${user.profileImage}`)
     : 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=400&q=80';
 
   return (

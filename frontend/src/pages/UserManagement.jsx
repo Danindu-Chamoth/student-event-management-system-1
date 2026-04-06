@@ -189,7 +189,11 @@ export default function UserManagement() {
                 <tr key={user._id}>
                   <td>
                     <img 
-                      src={user.profileImage ? `${import.meta.env.VITE_BACKEND_URL}/uploads/${user.profileImage}` : 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=100&q=80'} 
+                      src={user.profileImage && user.profileImage !== 'default-avatar.png'
+                        ? (user.profileImage.startsWith('http') 
+                            ? user.profileImage 
+                            : `${import.meta.env.VITE_BACKEND_URL}/uploads/${user.profileImage}`)
+                        : 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=100&q=80'} 
                       alt={user.name} 
                       className="table-avatar"
                     />

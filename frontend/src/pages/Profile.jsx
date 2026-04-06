@@ -135,8 +135,10 @@ export default function Profile({ defaultTab = 'overview' }) {
     return isNaN(date.getTime()) ? 'N/A' : date.toLocaleDateString();
   };
 
-  const profileImageUrl = userData?.profileImage 
-    ? `${import.meta.env.VITE_BACKEND_URL}/uploads/${userData.profileImage}`
+  const profileImageUrl = userData?.profileImage && userData.profileImage !== 'default-avatar.png'
+    ? (userData.profileImage.startsWith('http') 
+        ? userData.profileImage 
+        : `${import.meta.env.VITE_BACKEND_URL}/uploads/${userData.profileImage}`)
     : 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=400&q=80';
 
   return (
