@@ -5,6 +5,11 @@ const { protect, restrictTo } = require("../middleware/authMiddleware");
 const upload = require("../middleware/upload");
 
 // ==========================
+// PUBLIC ROUTES
+// ==========================
+router.get("/public/:id", userController.getPublicProfile);
+
+// ==========================
 // PROTECTED ROUTES (all routes below require valid JWT)
 // ==========================
 router.use(protect); // Apply to all routes beneath this line

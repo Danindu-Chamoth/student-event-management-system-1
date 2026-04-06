@@ -7,6 +7,7 @@ import Landing from './pages/Landing';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import Profile from './pages/Profile';
+import PublicProfile from './pages/PublicProfile';
 
 const AppContent = () => {
   const location = useLocation();
@@ -24,6 +25,7 @@ const AppContent = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/profile/:id" element={<PublicProfile />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/events/:id" element={<EventDetails />} />
           <Route path="/create" element={<EventForm />} />

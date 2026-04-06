@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { 
   User, Mail, Camera, ShieldCheck, Lock, 
   Trash2, AlertTriangle, CheckCircle2, ChevronRight 
@@ -43,7 +43,11 @@ export default function Profile() {
       });
     } catch (error) {
       console.error('Error fetching profile:', error);
-      setMessage({ type: 'error', text: 'Failed to load profile data.' });
+      if (error.response?.status === 401) {
+        navigate('/login');
+      } else {
+        setMessage({ type: 'error', text: 'Failed to load profile data.' });
+      }
     } finally {
       setLoading(false);
     }
@@ -111,7 +115,20 @@ export default function Profile() {
     }
   };
 
-  if (loading) return <div className="loading-screen">Loading Profile...</div>;
+  if (loading) return (
+    <div className="loading-screen glass-panel">
+      <div className="loader"></div>
+      <p>Loading Profile...</p>
+    </div>
+  );
+
+  if (!userData) return null;
+
+  const formatDate = (dateString) => {
+    if (!dateString) return 'N/A';
+    const date = new Date(dateString);
+    return isNaN(date.getTime()) ? 'N/A' : date.toLocaleDateString();
+  };
 
   const profileImageUrl = userData?.profileImage 
     ? `${import.meta.env.VITE_BACKEND_URL}/uploads/${userData.profileImage}`
@@ -146,11 +163,11 @@ export default function Profile() {
             <div className="profile-stats">
               <div className="stat-item">
                 <span className="stat-label">Last login</span>
-                <span className="stat-value">{new Date(userData?.lastLogin).toLocaleDateString() || 'N/A'}</span>
+                <span className="stat-value">{formatDate(userData?.lastLogin)}</span>
               </div>
               <div className="stat-item">
                 <span className="stat-label">Member since</span>
-                <span className="stat-value">{new Date(userData?.createdAt).toLocaleDateString()}</span>
+                <span className="stat-value">{formatDate(userData?.createdAt)}</span>
               </div>
               <div className="stat-item">
                 <span className="stat-label">Events Joined</span>
@@ -158,9 +175,9 @@ export default function Profile() {
               </div>
             </div>
 
-            <button className="btn btn-outline w-full">
+            <Link to={`/profile/${userData?._id}`} className="btn btn-outline w-full decoration-none">
               View Public Profile
-            </button>
+            </Link>
           </div>
 
           <div className="verification-card glass-panel animate-fade-in" style={{ animationDelay: '0.1s' }}>

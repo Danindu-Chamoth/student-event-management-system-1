@@ -1,6 +1,25 @@
 const User = require("../models/User");
 
 // ======================================
+// PUBLIC PROFILE OPERATIONS
+// ======================================
+
+exports.getPublicProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id)
+      .select("name bio profileImage role status createdAt");
+      
+    if (!user) {
+      return res.status(404).json({ message: "No user found with that ID." });
+    }
+
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// ======================================
 // SELF PROFILE MANAGEMENT OPERATIONS
 // ======================================
 
