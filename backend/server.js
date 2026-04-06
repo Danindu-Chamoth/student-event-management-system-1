@@ -11,7 +11,12 @@ app.use(express.json());
 app.use("/uploads", express.static("uploads"));
 
 const eventRoutes = require("./routes/eventRoutes");
+const authRoutes = require("./routes/authRoutes");
+const userRoutes = require("./routes/userRoutes");
+
 app.use("/api/events", eventRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/users", userRoutes);
 
 // ✅ Correct MongoDB connection (no old options)
 mongoose.connect(process.env.MONGO_URI)
