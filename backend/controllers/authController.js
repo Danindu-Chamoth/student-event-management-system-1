@@ -14,6 +14,41 @@ const signToken = (id) => {
   );
 };
 
+// Helper to generate dynamic HTML for OTP Email
+const generateOtpEmailTemplate = (otp, isResend = false) => {
+  const introText = isResend 
+    ? "You requested to resend your verification OTP. Please use the code below to verify your email."
+    : "Thank you for joining Evenza! Please use the following One-Time Password (OTP) to complete your registration.";
+
+  return `
+    <div style="font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0d0b14; color: #ffffff; padding: 40px 20px; text-align: center;">
+      <div style="max-width: 500px; margin: 0 auto; background-color: #161523; border-radius: 16px; padding: 40px; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+        <h2 style="color: #e555b7; font-size: 28px; margin-bottom: 10px; font-weight: 800; letter-spacing: 1px; margin-top: 0;">Evenza</h2>
+        <h1 style="font-size: 22px; color: #ffffff; margin-bottom: 20px;">Verify Your Email</h1>
+        
+        <p style="color: #a0a0b0; font-size: 15px; margin-bottom: 30px; line-height: 1.6;">
+          ${introText}
+        </p>
+        
+        <div style="background: linear-gradient(135deg, rgba(164, 99, 242, 0.15) 0%, rgba(229, 85, 183, 0.15) 100%); border: 1px solid rgba(229, 85, 183, 0.3); border-radius: 12px; padding: 25px; margin-bottom: 30px;">
+          <h1 style="margin: 0; font-size: 42px; letter-spacing: 8px; color: #ffffff; text-shadow: 0 0 10px rgba(229, 85, 183, 0.5);">${otp}</h1>
+        </div>
+        
+        <p style="color: #e0d0f5; font-size: 14px; margin-bottom: 10px; font-weight: 600;">
+          This code will expire in 15 minutes.
+        </p>
+        
+        <div style="border-top: 1px solid rgba(255,255,255,0.08); padding-top: 20px; margin-top: 30px;">
+          <p style="color: #6a6a7c; font-size: 12px; line-height: 1.5; margin: 0;">
+            If you did not request this email, please ignore it.<br/>
+            &copy; 2026 Evenza. The Digital Gala for University Life.
+          </p>
+        </div>
+      </div>
+    </div>
+  `;
+};
+
 // =============================
 // REGISTER
 // =============================
@@ -43,12 +78,14 @@ exports.register = async (req, res) => {
     });
 
     const message = `Your email verification OTP is:\n\n${verificationToken}\n\nThis code will expire in 15 minutes. If you did not request this, please ignore this email.`;
+    const htmlMessage = generateOtpEmailTemplate(verificationToken, false);
 
     try {
       await sendEmail({
         email: newUser.email,
         subject: "Verify Your Email - Evenza",
         message,
+        html: htmlMessage
       });
 
       res.status(201).json({
@@ -132,11 +169,13 @@ exports.resendVerification = async (req, res) => {
     await user.save({ validateBeforeSave: false });
 
     const message = `You requested to resend your verification OTP. Your new OTP is:\n\n${verificationToken}\n\nThis code will expire in 15 minutes.`;
+    const htmlMessage = generateOtpEmailTemplate(verificationToken, true);
 
     await sendEmail({
       email: user.email,
       subject: "Verify Your Email - Evenza",
       message,
+      html: htmlMessage
     });
 
     res.status(200).json({ message: "Verification email sent successfully!" });
