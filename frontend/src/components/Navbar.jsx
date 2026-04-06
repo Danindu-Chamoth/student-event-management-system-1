@@ -58,7 +58,14 @@ export default function Navbar() {
           
           {user && (
             <div className="user-profile-nav">
-              <span className="user-name-nav">{user.name}</span>
+              <Link to="/profile" className="user-link-nav">
+                <img 
+                  src={user.profileImage ? `${import.meta.env.VITE_BACKEND_URL}/uploads/${user.profileImage}` : 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=100&q=80'} 
+                  alt={user.name} 
+                  className="user-avatar-nav"
+                />
+                <span className="user-name-nav">{user.name}</span>
+              </Link>
               <button onClick={handleLogout} className="btn-logout-nav" title="Logout">
                 <LogOut size={16} />
               </button>

@@ -6,11 +6,14 @@ import EventForm from './pages/EventForm';
 import Landing from './pages/Landing';
 import Register from './pages/Register';
 import Login from './pages/Login';
+import Profile from './pages/Profile';
 
 const AppContent = () => {
   const location = useLocation();
   const hideNavbarRoutes = ['/', '/register', '/login'];
+  const profileRoutes = ['/profile'];
   const shouldHideNavbar = hideNavbarRoutes.includes(location.pathname);
+  const isProfilePage = profileRoutes.includes(location.pathname);
 
   return (
     <>
@@ -20,6 +23,7 @@ const AppContent = () => {
           <Route path="/" element={<Landing />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/events/:id" element={<EventDetails />} />
           <Route path="/create" element={<EventForm />} />

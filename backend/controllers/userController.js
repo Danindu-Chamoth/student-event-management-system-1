@@ -17,8 +17,8 @@ exports.getProfile = async (req, res) => {
 exports.updateProfile = async (req, res) => {
   try {
     // We filter out password and role updates via this generic route
-    const { name, email } = req.body;
-    let updateData = { name, email };
+    const { name, email, bio } = req.body;
+    let updateData = { name, email, bio };
 
     if (req.file) {
       updateData.profileImage = req.file.filename;
@@ -64,6 +64,22 @@ exports.updatePassword = async (req, res) => {
     res.status(200).json({
       status: "success",
       message: "Password updated successfully."
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+exports.deactivateProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+    
+    user.status = "disabled";
+    await user.save();
+
+    res.status(200).json({
+      status: "success",
+      message: "Account deactivated successfully."
     });
   } catch (error) {
     res.status(500).json({ message: error.message });

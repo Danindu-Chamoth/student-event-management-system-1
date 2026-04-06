@@ -75,10 +75,31 @@
   border-radius: 20px;
 }
 
+.user-link-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.user-avatar-nav {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--accent-primary);
+}
+
 .user-name-nav {
   font-size: 0.875rem;
   font-weight: 500;
   color: var(--text-main);
+  transition: color 0.2s;
+}
+
+.user-link-nav:hover .user-name-nav {
+  color: var(--accent-primary);
 }
 
 .btn-logout-nav {

@@ -15,6 +15,7 @@ router.route("/profile")
   .patch(upload.single("profileImage"), userController.updateProfile);
 
 router.patch("/update-password", userController.updatePassword);
+router.patch("/deactivate-profile", userController.deactivateProfile);
 
 // ==========================
 // ADMIN ONLY ROUTES
