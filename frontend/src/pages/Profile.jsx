@@ -7,8 +7,9 @@ import {
 import api from '../services/api';
 import './Profile.css';
 
-export default function Profile() {
+export default function Profile({ defaultTab = 'overview' }) {
   const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState(defaultTab);
   const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState(null);
   const [message, setMessage] = useState({ type: '', text: '' });
@@ -29,6 +30,10 @@ export default function Profile() {
   useEffect(() => {
     fetchProfile();
   }, []);
+
+  useEffect(() => {
+    setActiveTab(defaultTab);
+  }, [defaultTab]);
 
   const fetchProfile = async () => {
     try {
@@ -184,7 +189,22 @@ export default function Profile() {
               </div>
             </div>
 
-            <Link to={`/profile/${userData?._id}`} className="btn btn-outline w-full decoration-none">
+            <div className="profile-nav-tabs">
+              <button 
+                className={`nav-tab-item ${activeTab === 'overview' ? 'active' : ''}`}
+                onClick={() => setActiveTab('overview')}
+              >
+                <User size={18} /> Profile Overview
+              </button>
+              <button 
+                className={`nav-tab-item ${activeTab === 'settings' ? 'active' : ''}`}
+                onClick={() => setActiveTab('settings')}
+              >
+                <Lock size={18} /> Account Settings
+              </button>
+            </div>
+
+            <Link to={`/profile/${userData?._id}`} className="btn btn-outline w-full decoration-none" style={{ marginTop: '1rem' }}>
               View Public Profile
             </Link>
           </div>
@@ -204,127 +224,160 @@ export default function Profile() {
             </div>
           )}
 
-          {/* Edit Profile Section */}
-          <section className="profile-section glass-panel animate-fade-in" style={{ animationDelay: '0.2s' }}>
-            <div className="section-header">
-              <User className="section-icon" size={24} />
-              <h2>Edit Profile</h2>
+          {activeTab === 'overview' ? (
+            <div className="animate-fade-in">
+              <section className="profile-section glass-panel">
+                <div className="section-header">
+                  <User className="section-icon" size={24} />
+                  <h2>Profile Overview</h2>
+                </div>
+                
+                <div className="overview-grid">
+                  <div className="overview-item">
+                    <label>Full Name</label>
+                    <p>{userData.name}</p>
+                  </div>
+                  <div className="overview-item">
+                    <label>Email Address</label>
+                    <p>{userData.email}</p>
+                  </div>
+                  <div className="overview-item">
+                    <label>Account Role</label>
+                    <p style={{ textTransform: 'capitalize' }}>{userData.role}</p>
+                  </div>
+                  <div className="overview-item">
+                    <label>Bio</label>
+                    <p className="bio-text">{userData.bio || "No bio provided yet."}</p>
+                  </div>
+                </div>
+              </section>
+
+              <div className="overview-cards">
+                <div className="stats-mini-card glass-panel">
+                  <span className="mini-label">Events Joined</span>
+                  <span className="mini-value">12</span>
+                </div>
+                <div className="stats-mini-card glass-panel">
+                  <span className="mini-label">Trust Score</span>
+                  <span className="mini-value">98%</span>
+                </div>
+              </div>
             </div>
-
-            <form onSubmit={handleProfileUpdate}>
-              <div className="form-row">
-                <div className="input-group">
-                  <label className="input-label">FULL NAME</label>
-                  <input 
-                    type="text" 
-                    className="input-field" 
-                    value={profileForm.name}
-                    onChange={(e) => setProfileForm({...profileForm, name: e.target.value})}
-                    required
-                  />
+          ) : (
+            <div className="animate-fade-in">
+              {/* Edit Profile Section */}
+              <section className="profile-section glass-panel">
+                <div className="section-header">
+                  <User className="section-icon" size={24} />
+                  <h2>Edit Profile</h2>
                 </div>
-                <div className="input-group">
-                  <label className="input-label">EMAIL ADDRESS</label>
-                  <input 
-                    type="email" 
-                    className="input-field" 
-                    value={profileForm.email}
-                    onChange={(e) => setProfileForm({...profileForm, email: e.target.value})}
-                    required
-                  />
+
+                <form onSubmit={handleProfileUpdate}>
+                  <div className="form-row">
+                    <div className="input-group">
+                      <label className="input-label">FULL NAME</label>
+                      <input 
+                        type="text" 
+                        className="input-field" 
+                        value={profileForm.name}
+                        onChange={(e) => setProfileForm({...profileForm, name: e.target.value})}
+                        required
+                      />
+                    </div>
+                    <div className="input-group">
+                      <label className="input-label">EMAIL ADDRESS</label>
+                      <input 
+                        type="email" 
+                        className="input-field" 
+                        value={profileForm.email}
+                        onChange={(e) => setProfileForm({...profileForm, email: e.target.value})}
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="input-group">
+                    <label className="input-label">BIO</label>
+                    <textarea 
+                      className="input-field" 
+                      rows="4"
+                      placeholder="Tell us about yourself..."
+                      value={profileForm.bio}
+                      onChange={(e) => setProfileForm({...profileForm, bio: e.target.value})}
+                    ></textarea>
+                  </div>
+
+                  <div className="section-footer">
+                    <button type="submit" className="btn btn-primary">Save Changes</button>
+                  </div>
+                </form>
+              </section>
+
+              {/* Change Password Section */}
+              <section className="profile-section glass-panel">
+                <div className="section-header">
+                  <Lock className="section-icon" size={24} />
+                  <h2>Change Password</h2>
                 </div>
-              </div>
 
-              <div className="input-group">
-                <label className="input-label">BIO</label>
-                <textarea 
-                  className="input-field" 
-                  rows="4"
-                  placeholder="Tell us about yourself..."
-                  value={profileForm.bio}
-                  onChange={(e) => setProfileForm({...profileForm, bio: e.target.value})}
-                ></textarea>
-              </div>
+                <form onSubmit={handlePasswordUpdate}>
+                  <div className="input-group">
+                    <label className="input-label">CURRENT PASSWORD</label>
+                    <input 
+                      type="password" 
+                      className="input-field" 
+                      value={passwordForm.currentPassword}
+                      onChange={(e) => setPasswordForm({...passwordForm, currentPassword: e.target.value})}
+                      required
+                    />
+                  </div>
 
-              <div className="section-footer">
-                <button type="submit" className="btn btn-primary">Save Changes</button>
-              </div>
-            </form>
-          </section>
+                  <div className="form-row">
+                    <div className="input-group">
+                      <label className="input-label">NEW PASSWORD</label>
+                      <input 
+                        type="password" 
+                        className="input-field" 
+                        value={passwordForm.newPassword}
+                        onChange={(e) => setPasswordForm({...passwordForm, newPassword: e.target.value})}
+                        required
+                      />
+                    </div>
+                    <div className="input-group">
+                      <label className="input-label">CONFIRM NEW PASSWORD</label>
+                      <input 
+                        type="password" 
+                        className="input-field" 
+                        value={passwordForm.confirmPassword}
+                        onChange={(e) => setPasswordForm({...passwordForm, confirmPassword: e.target.value})}
+                        required
+                      />
+                    </div>
+                  </div>
 
-          {/* Change Password Section */}
-          <section className="profile-section glass-panel animate-fade-in" style={{ animationDelay: '0.3s' }}>
-            <div className="section-header">
-              <Lock className="section-icon" size={24} />
-              <h2>Change Password</h2>
+                  <div className="section-footer">
+                    <button type="submit" className="btn btn-primary">Update Password</button>
+                  </div>
+                </form>
+              </section>
+
+              {/* Deactivate Section */}
+              <section className="profile-section glass-panel">
+                <div className="deactivate-box">
+                  <div className="deactivate-info">
+                    <h3>Deactivate Account</h3>
+                    <p>Temporarily disable your profile and event history.</p>
+                  </div>
+                  <button 
+                    onClick={handleDeactivate} 
+                    className="btn btn-danger"
+                  >
+                    Deactivate
+                  </button>
+                </div>
+              </section>
             </div>
-
-            <form onSubmit={handlePasswordUpdate}>
-              <div className="input-group">
-                <label className="input-label">CURRENT PASSWORD</label>
-                <input 
-                  type="password" 
-                  className="input-field" 
-                  value={passwordForm.currentPassword}
-                  onChange={(e) => setPasswordForm({...passwordForm, currentPassword: e.target.value})}
-                  required
-                />
-              </div>
-
-              <div className="form-row">
-                <div className="input-group">
-                  <label className="input-label">NEW PASSWORD</label>
-                  <input 
-                    type="password" 
-                    className="input-field" 
-                    value={passwordForm.newPassword}
-                    onChange={(e) => setPasswordForm({...passwordForm, newPassword: e.target.value})}
-                    required
-                  />
-                </div>
-                <div className="input-group">
-                  <label className="input-label">CONFIRM NEW PASSWORD</label>
-                  <input 
-                    type="password" 
-                    className="input-field" 
-                    value={passwordForm.confirmPassword}
-                    onChange={(e) => setPasswordForm({...passwordForm, confirmPassword: e.target.value})}
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="password-strength">
-                <div className="strength-meta">
-                  <span>Strong</span>
-                  <span>85%</span>
-                </div>
-                <div className="strength-bar-bg">
-                  <div className="strength-bar-fill strength-good"></div>
-                </div>
-              </div>
-
-              <div className="section-footer">
-                <button type="submit" className="btn btn-primary">Update Password</button>
-              </div>
-            </form>
-          </section>
-
-          {/* Deactivate Section */}
-          <section className="profile-section glass-panel animate-fade-in" style={{ animationDelay: '0.4s' }}>
-            <div className="deactivate-box">
-              <div className="deactivate-info">
-                <h3>Deactivate Account</h3>
-                <p>Temporarily disable your profile and event history.</p>
-              </div>
-              <button 
-                onClick={handleDeactivate} 
-                className="btn btn-danger"
-              >
-                Deactivate
-              </button>
-            </div>
-          </section>
+          )}
         </main>
       </div>
     </div>

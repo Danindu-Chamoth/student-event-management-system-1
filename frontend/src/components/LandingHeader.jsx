@@ -1,10 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { CalendarDays, LogOut } from 'lucide-react';
+import { CalendarDays, LogOut, ChevronDown, User, Settings } from 'lucide-react';
 import './LandingHeader.css';
 
 export default function LandingHeader() {
   const [user, setUser] = useState(null);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -16,6 +18,14 @@ export default function LandingHeader() {
         console.error("Error parsing user from localStorage", e);
       }
     }
+
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   const handleLogout = () => {
@@ -40,18 +50,43 @@ export default function LandingHeader() {
       </div>
       <div className="lh-actions">
         {user ? (
-          <div className="user-profile">
-            <Link to="/profile" className="user-link">
+          <div className="user-profile" ref={dropdownRef}>
+            <button 
+              className="user-link btn-nostyle" 
+              onClick={() => setDropdownOpen(!dropdownOpen)}
+            >
               <img 
                 src={user.profileImage ? `${import.meta.env.VITE_BACKEND_URL}/uploads/${user.profileImage}` : 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=100&q=80'} 
                 alt={user.name} 
                 className="user-avatar-sm"
               />
               <span className="user-name">Hi, {user.name}</span>
-            </Link>
-            <button onClick={handleLogout} className="btn-logout-icon" title="Logout">
-              <LogOut size={20} />
+              <ChevronDown size={14} className={`dropdown-icon ${dropdownOpen ? 'open' : ''}`} color="#cbd5e1" />
             </button>
+
+            {dropdownOpen && (
+              <div className="profile-dropdown animate-fade-in">
+                <div className="dropdown-header">
+                  <span className="dropdown-name">{user.name}</span>
+                  <span className="dropdown-role">{user.role || 'Student'}</span>
+                </div>
+                <div className="dropdown-divider"></div>
+                <div className="dropdown-menu">
+                  <Link to="/profile" className="dropdown-item" onClick={() => setDropdownOpen(false)}>
+                    <User size={16} /> Dashboard
+                  </Link>
+                  <Link to="/settings" className="dropdown-item" onClick={() => setDropdownOpen(false)}>
+                    <Settings size={16} /> Profile Settings
+                  </Link>
+                </div>
+                <div className="dropdown-divider"></div>
+                <div className="dropdown-menu">
+                  <button onClick={handleLogout} className="dropdown-item text-danger">
+                    <LogOut size={16} /> Logout
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         ) : (
           <>

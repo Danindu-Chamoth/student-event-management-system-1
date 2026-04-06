@@ -13,8 +13,8 @@ import VerifyEmailInfo from './pages/VerifyEmailInfo';
 
 const AppContent = () => {
   const location = useLocation();
-  const hideNavbarRoutes = ['/', '/register', '/login', '/profile', '/verify-info'];
-  const profileRoutes = ['/profile'];
+  const hideNavbarRoutes = ['/', '/register', '/login', '/profile', '/verify-info', '/settings'];
+  const profileRoutes = ['/profile', '/settings'];
   const shouldHideNavbar = hideNavbarRoutes.includes(location.pathname) || location.pathname.startsWith('/profile/');
   const isProfilePage = profileRoutes.includes(location.pathname);
 
@@ -27,7 +27,8 @@ const AppContent = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/verify-info" element={<VerifyEmailInfo />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile" element={<Profile defaultTab="overview" />} />
+          <Route path="/settings" element={<Profile defaultTab="settings" />} />
           <Route path="/profile/:id" element={<PublicProfile />} />
           <Route path="/admin/users" element={<UserManagement />} />
           <Route path="/dashboard" element={<Dashboard />} />

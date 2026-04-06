@@ -39,7 +39,8 @@
   transition: color 0.3s;
 }
 
-.nav-menu-item:hover, .nav-menu-item.active {
+.nav-menu-item:hover,
+.nav-menu-item.active {
   color: var(--text-main);
 }
 

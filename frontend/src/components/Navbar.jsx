@@ -52,7 +52,7 @@ export default function Navbar() {
             <CalendarDays className="logo-icon" />
             <span>Evenza</span>
           </Link>
-          
+
           {user && (
             <div className="nav-menu-links">
               <Link to="/dashboard" className="nav-menu-item">Dashboard</Link>
@@ -67,13 +67,13 @@ export default function Navbar() {
           <button onClick={toggleTheme} className="btn-icon theme-toggle" aria-label="Toggle Theme">
             {isDark ? <Sun size={20} /> : <Moon size={20} />}
           </button>
-          
+
           {user && (
             <div className="user-profile-nav">
               <Link to="/profile" className="user-link-nav">
-                <img 
-                  src={user.profileImage ? `${import.meta.env.VITE_BACKEND_URL}/uploads/${user.profileImage}` : 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=100&q=80'} 
-                  alt={user.name} 
+                <img
+                  src={user.profileImage ? `${import.meta.env.VITE_BACKEND_URL}/uploads/${user.profileImage}` : 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=100&q=80'}
+                  alt={user.name}
                   className="user-avatar-nav"
                 />
                 <span className="user-name-nav">{user.name}</span>
