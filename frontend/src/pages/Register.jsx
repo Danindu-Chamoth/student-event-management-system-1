@@ -20,6 +20,18 @@ export default function Register() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const getPasswordStrength = (password) => {
+    if (!password) return 0;
+    let strength = 0;
+    if (password.length >= 6) strength += 1;
+    if (password.length >= 8 && /[a-zA-Z]/.test(password) && /\d/.test(password)) strength += 1;
+    if (/[^a-zA-Z0-9]/.test(password)) strength += 1;
+    return strength === 0 ? 1 : strength;
+  };
+
+  const strengthLevel = getPasswordStrength(formData.password);
+  const strengthLabels = ['NONE', 'WEAK', 'MEDIUM', 'STRONG'];
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (formData.password !== formData.confirmPassword) {
@@ -105,6 +117,18 @@ export default function Register() {
                   required
                 />
               </div>
+              {formData.password && (
+                <div className="password-strength-container">
+                  <div className="strength-label">
+                    STRENGTH: <span style={{ color: 'inherit', fontWeight: 'bold' }}>{strengthLabels[strengthLevel]}</span>
+                  </div>
+                  <div className="strength-bars">
+                    <div className={`strength-bar ${strengthLevel >= 1 ? 'bar-red' : ''}`}></div>
+                    <div className={`strength-bar ${strengthLevel >= 2 ? 'bar-yellow' : ''}`}></div>
+                    <div className={`strength-bar ${strengthLevel >= 3 ? 'bar-green' : ''}`}></div>
+                  </div>
+                </div>
+              )}
             </div>
             
             <div className="form-group half">
