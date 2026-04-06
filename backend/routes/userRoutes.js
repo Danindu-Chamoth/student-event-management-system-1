@@ -19,6 +19,7 @@ router.route("/profile")
   .get(userController.getProfile)
   .patch(upload.single("profileImage"), userController.updateProfile);
 
+router.post("/send-password-otp", userController.sendPasswordChangeOtp);
 router.patch("/update-password", userController.updatePassword);
 router.patch("/deactivate-profile", userController.deactivateProfile);
 

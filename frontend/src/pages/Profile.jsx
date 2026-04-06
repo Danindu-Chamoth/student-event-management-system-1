@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { 
   User, Mail, Camera, ShieldCheck, Lock, 
-  Trash2, AlertTriangle, CheckCircle2, ChevronRight 
+  Trash2, AlertTriangle, CheckCircle2, ChevronRight, Send 
 } from 'lucide-react';
 import api from '../services/api';
 import './Profile.css';
@@ -22,10 +22,13 @@ export default function Profile({ defaultTab = 'overview' }) {
   });
   
   const [passwordForm, setPasswordForm] = useState({
-    currentPassword: '',
+    otp: '',
     newPassword: '',
     confirmPassword: ''
   });
+  const [otpSent, setOtpSent] = useState(false);
+  const [otpLoading, setOtpLoading] = useState(false);
+  const [otpCountdown, setOtpCountdown] = useState(0);
 
   useEffect(() => {
     fetchProfile();
@@ -71,18 +74,45 @@ export default function Profile({ defaultTab = 'overview' }) {
     }
   };
 
+  // Send OTP to user's email for password change
+  const handleSendOtp = async () => {
+    try {
+      setOtpLoading(true);
+      await api.post('/users/send-password-otp');
+      setOtpSent(true);
+      setMessage({ type: 'success', text: 'OTP sent to your email address!' });
+      // Start 60s cooldown
+      setOtpCountdown(60);
+    } catch (error) {
+      setMessage({ type: 'error', text: error.response?.data?.message || 'Failed to send OTP.' });
+    } finally {
+      setOtpLoading(false);
+    }
+  };
+
+  // Countdown timer for resend OTP
+  useEffect(() => {
+    if (otpCountdown <= 0) return;
+    const timer = setTimeout(() => setOtpCountdown(otpCountdown - 1), 1000);
+    return () => clearTimeout(timer);
+  }, [otpCountdown]);
+
   const handlePasswordUpdate = async (e) => {
     e.preventDefault();
     if (passwordForm.newPassword !== passwordForm.confirmPassword) {
       return setMessage({ type: 'error', text: 'Passwords do not match.' });
     }
+    if (passwordForm.newPassword.length < 6) {
+      return setMessage({ type: 'error', text: 'Password must be at least 6 characters.' });
+    }
     try {
       await api.patch('/users/update-password', {
-        currentPassword: passwordForm.currentPassword,
+        otp: passwordForm.otp,
         newPassword: passwordForm.newPassword
       });
       setMessage({ type: 'success', text: 'Password updated successfully!' });
-      setPasswordForm({ currentPassword: '', newPassword: '', confirmPassword: '' });
+      setPasswordForm({ otp: '', newPassword: '', confirmPassword: '' });
+      setOtpSent(false);
     } catch (error) {
       setMessage({ type: 'error', text: error.response?.data?.message || 'Password update failed.' });
     }
@@ -322,45 +352,94 @@ export default function Profile({ defaultTab = 'overview' }) {
                   <h2>Change Password</h2>
                 </div>
 
-                <form onSubmit={handlePasswordUpdate}>
-                  <div className="input-group">
-                    <label className="input-label">CURRENT PASSWORD</label>
-                    <input 
-                      type="password" 
-                      className="input-field" 
-                      value={passwordForm.currentPassword}
-                      onChange={(e) => setPasswordForm({...passwordForm, currentPassword: e.target.value})}
-                      required
-                    />
-                  </div>
-
-                  <div className="form-row">
-                    <div className="input-group">
-                      <label className="input-label">NEW PASSWORD</label>
-                      <input 
-                        type="password" 
-                        className="input-field" 
-                        value={passwordForm.newPassword}
-                        onChange={(e) => setPasswordForm({...passwordForm, newPassword: e.target.value})}
-                        required
-                      />
+                {!otpSent ? (
+                  <div className="otp-request-box">
+                    <div className="otp-info">
+                      <Mail size={20} className="text-accent-primary" />
+                      <div>
+                        <p style={{ color: 'var(--text-main)', fontWeight: 500, marginBottom: '0.25rem' }}>Email Verification Required</p>
+                        <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>We'll send a 6-digit OTP to <strong style={{ color: 'var(--accent-primary)' }}>{userData?.email}</strong> to verify your identity before changing your password.</p>
+                      </div>
                     </div>
-                    <div className="input-group">
-                      <label className="input-label">CONFIRM NEW PASSWORD</label>
-                      <input 
-                        type="password" 
-                        className="input-field" 
-                        value={passwordForm.confirmPassword}
-                        onChange={(e) => setPasswordForm({...passwordForm, confirmPassword: e.target.value})}
-                        required
-                      />
+                    <div className="section-footer">
+                      <button 
+                        type="button" 
+                        className="btn btn-primary"
+                        onClick={handleSendOtp}
+                        disabled={otpLoading}
+                        style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+                      >
+                        <Send size={16} />
+                        {otpLoading ? 'Sending...' : 'Send OTP to Email'}
+                      </button>
                     </div>
                   </div>
+                ) : (
+                  <form onSubmit={handlePasswordUpdate}>
+                    <div className="otp-sent-banner">
+                      <CheckCircle2 size={18} />
+                      <span>OTP sent to <strong>{userData?.email}</strong>. Check your inbox.</span>
+                    </div>
 
-                  <div className="section-footer">
-                    <button type="submit" className="btn btn-primary">Update Password</button>
-                  </div>
-                </form>
+                    <div className="input-group">
+                      <label className="input-label">ENTER OTP</label>
+                      <input 
+                        type="text" 
+                        className="input-field otp-input-field" 
+                        placeholder="Enter 6-digit OTP"
+                        maxLength={6}
+                        value={passwordForm.otp}
+                        onChange={(e) => setPasswordForm({...passwordForm, otp: e.target.value.replace(/\D/g, '')})}
+                        required
+                        autoFocus
+                        style={{ letterSpacing: '4px', fontSize: '1.2rem', textAlign: 'center', maxWidth: '280px' }}
+                      />
+                      <div style={{ marginTop: '0.5rem', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                        {otpCountdown > 0 ? (
+                          <span>Resend OTP in <strong style={{ color: 'var(--accent-primary)' }}>{otpCountdown}s</strong></span>
+                        ) : (
+                          <button type="button" onClick={handleSendOtp} disabled={otpLoading} style={{ background: 'none', border: 'none', color: 'var(--accent-primary)', cursor: 'pointer', padding: 0, fontWeight: 600, fontSize: '0.8rem' }}>
+                            Resend OTP
+                          </button>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="form-row">
+                      <div className="input-group">
+                        <label className="input-label">NEW PASSWORD</label>
+                        <input 
+                          type="password" 
+                          className="input-field" 
+                          value={passwordForm.newPassword}
+                          onChange={(e) => setPasswordForm({...passwordForm, newPassword: e.target.value})}
+                          required
+                        />
+                      </div>
+                      <div className="input-group">
+                        <label className="input-label">CONFIRM NEW PASSWORD</label>
+                        <input 
+                          type="password" 
+                          className="input-field" 
+                          value={passwordForm.confirmPassword}
+                          onChange={(e) => setPasswordForm({...passwordForm, confirmPassword: e.target.value})}
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    <div className="section-footer" style={{ gap: '1rem' }}>
+                      <button 
+                        type="button" 
+                        className="btn btn-outline"
+                        onClick={() => { setOtpSent(false); setPasswordForm({ otp: '', newPassword: '', confirmPassword: '' }); }}
+                      >
+                        Cancel
+                      </button>
+                      <button type="submit" className="btn btn-primary">Update Password</button>
+                    </div>
+                  </form>
+                )}
               </section>
 
               {/* Deactivate Section */}
