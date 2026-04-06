@@ -73,7 +73,13 @@ export default function Login() {
           <div className="form-group mb-6">
             <div className="flex-between">
               <label>PASSWORD</label>
-              <a href="#" className="forgot-link">Forgot Password?</a>
+              <button
+                type="button"
+                className="forgot-link btn-nostyle"
+                onClick={() => navigate('/forgot-password')}
+              >
+                Forgot Password?
+              </button>
             </div>
             <div className="input-with-icon-right">
               <input 
