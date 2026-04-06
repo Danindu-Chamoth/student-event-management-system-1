@@ -1,9 +1,23 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { CalendarDays, ShieldCheck, Calendar, Ticket, LineChart, GraduationCap, Users } from 'lucide-react';
 import LandingHeader from '../components/LandingHeader';
 import LandingFooter from '../components/LandingFooter';
 import './Landing.css';
 export default function Landing() {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      try {
+        setUser(JSON.parse(storedUser));
+      } catch (e) {
+        console.error("Error parsing user from localStorage", e);
+      }
+    }
+  }, []);
+
   return (
     <div className="landing-page dark-theme">
       {/* Custom Navbar */}
@@ -157,9 +171,11 @@ export default function Landing() {
       {/* CTA Section */}
       <section className="cta-section">
         <div className="cta-box">
-          <h2>Ready to Get Started?</h2>
+          <h2>{user ? `Ready to jump back in, ${user.name}?` : 'Ready to Get Started?'}</h2>
           <p>Join thousands of students and faculty members in shaping the future of university event management.</p>
-          <Link to="/register" className="btn-register-dark">Register Now</Link>
+          <Link to={user ? "/dashboard" : "/register"} className="btn-register-dark">
+            {user ? 'Go to Dashboard' : 'Register Now'}
+          </Link>
         </div>
       </section>
 
